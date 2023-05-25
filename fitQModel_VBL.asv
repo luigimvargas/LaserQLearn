@@ -58,8 +58,8 @@ function [result] = fitQModel_VBL(SessionData,model,laserSide)
     beq=[];
     Aineq=[];
     bineq=[];
-    lb = [0 0 0 0 0 0];    % lower limits for alpha, beta, bias, and laser variants
-    ub = [1 10 1 1 10 1];  % upper limits for alpha, beta, bias, and laser variants
+    lb = [0 0 0 0];    % lower limits for alpha, beta, decay rate, and inverse alpha
+    ub = [1 10 1 1];  % upper limits for alpha, beta, decay rate, and inverse alpha
     inx = [rand(1) rand(1) rand(1) rand(1) rand(1) rand(1)]; % starting points to fit from (shouldn't matter)
 
     options = optimset('Display','on','MaxIter',5000000,'TolFun',1e-15,'TolX',1e-15,...
@@ -67,7 +67,7 @@ function [result] = fitQModel_VBL(SessionData,model,laserSide)
         'LargeScale','off');
     %% Define algorithm and options for fitting
     % Inputs(1:4) are alpha, beta, decay rate, and inverse alpha
-    tester = @(inputs)compareModelFit_VBL(SessionData,laserSide,model,...
+    tester = @(inputs)compareModelFit_VB(SessionData,laserSide,model,...
         inputs(1),inputs(2),inputs(3),inputs(4),inputs(5),inputs(6));
     problem = createOptimProblem('fmincon','objective',tester,'x0', inx,...
         'lb',lb,'ub',ub,'Aeq',Aeq,'beq',beq,'Aineq',Aineq,'bineq',bineq,'options',options);

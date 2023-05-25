@@ -6,27 +6,9 @@
     end
     %%
     results=table({'model'},2,3,'VariableNames',{'ModelName','MedianAcc','Likelihood'});
-    
-    %Split SessionData into LaserOn and LaserOff eventually
-    LaserOnTrials=find(SessionData.Laser==0);
-    
-    splitNum=480;
-    
-    SessionDataTrain=struct();
-    SessionDataTrain.choiceHistory=SessionData.choiceHistory(1:splitNum);
-    SessionDataTrain.BlockTypes=SessionData.BlockTypes(1:splitNum);
-    SessionDataTrain.nTrials=splitNum;
-    SessionDataTrain.Rewarded=SessionData.Rewarded(1:splitNum);
-    SessionDataTrain.TrialSettings=SessionData.TrialSettings(1:splitNum);
-    
-    SessionDataTest=struct();
-    SessionDataTest.choiceHistory=SessionData.choiceHistory(splitNum+1:SessionData.nTrials);
-    SessionDataTest.BlockTypes=SessionData.BlockTypes(splitNum+1:SessionData.nTrials);
-    SessionDataTest.nTrials=SessionData.nTrials-splitNum;
-    SessionDataTest.Rewarded=SessionData.Rewarded(splitNum+1:SessionData.nTrials);
-    SessionDataTest.TrialSettings=SessionData.TrialSettings(splitNum+1:SessionData.nTrials);
+
     %% Test Softmax
-    softmaxResult=fitQModel_VB(SessionDataTrain,'SoftMax');
+    softmaxResult=fitQModel_VBL(SessionData,'SoftMax','R');
     plotVB(softmaxResult);
     %% Test Softmax Accuracy
     accuracyList=zeros(1,2000);

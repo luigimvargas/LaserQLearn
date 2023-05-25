@@ -1,14 +1,10 @@
-function [choices,rewards]=extractChoices_VB(SessionData)
+function [choices,rewards]=extractChoices_VBL(SessionData)
 
 if ~exist('SessionData','var')
    uiopen 
 end
 
-zero=cell(1);
-zero{1}=0;
-
 %%
-
 choices=cell2mat(SessionData.choiceHistory);
 rewards=zeros(2,SessionData.nTrials);
 
@@ -36,8 +32,5 @@ for i=1:SessionData.nTrials
             rewards(2,i)=SessionData.Rewarded{i};
     end
 end
-
-
-
 
 
