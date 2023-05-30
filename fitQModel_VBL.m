@@ -58,8 +58,8 @@ function [result] = fitQModel_VBL(SessionData,model,laserSide)
     beq=[];
     Aineq=[];
     bineq=[];
-    lb = [0 0 0 0 0 0];    % lower limits for alpha, beta, bias, and laser variants
-    ub = [1 10 1 1 10 1];  % upper limits for alpha, beta, bias, and laser variants
+    lb = [0 0 -.1 0 0 -.1];    % lower limits for alpha, beta, bias, and laser variants
+    ub = [1 10 .1 1 10 .1];  % upper limits for alpha, beta, bias, and laser variants
     inx = [rand(1) rand(1) rand(1) rand(1) rand(1) rand(1)]; % starting points to fit from (shouldn't matter)
 
     options = optimset('Display','on','MaxIter',5000000,'TolFun',1e-15,'TolX',1e-15,...
@@ -72,7 +72,7 @@ function [result] = fitQModel_VBL(SessionData,model,laserSide)
     problem = createOptimProblem('fmincon','objective',tester,'x0', inx,...
         'lb',lb,'ub',ub,'Aeq',Aeq,'beq',beq,'Aineq',Aineq,'bineq',bineq,'options',options);
     ms = MultiStart;
-    k = 200;
+    k = 500;
 
     warning off;
     %% Fit parameters according to the model and behavioral data
@@ -106,6 +106,7 @@ function [result] = fitQModel_VBL(SessionData,model,laserSide)
     result.betaL = inputs(5);
     result.biasL = inputs(6);
     result.choiceProbabilities = choiceProbabilities;
+    result.laserSide=laserSide;
     result.RPEs = RPEs;
     result.Qvalues = Qvalues;
     result.QSums = QSums;
