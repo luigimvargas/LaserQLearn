@@ -4,7 +4,7 @@ function [acc]=compareModelFit_VBL(SessionData,laserSide,whichModel,alpha,beta,b
        uiopen 
     end
     %% Check Model Fit    
-    [choices,~]=extractChoices_VB(SessionData);
+    [choices,~]=extractChoices_VBL(SessionData);
     if whichModel=='SoftMax'
         [choiceProbabilities, ~,~]=LV_QLearn_Softmax_VBL(SessionData,laserSide,alpha,beta,bias,alphaL,betaL,biasL);
         choices = choices - 1;

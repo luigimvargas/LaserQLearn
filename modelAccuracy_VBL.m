@@ -2,7 +2,7 @@
 function [acc]=modelAccuracy_VBL(Result)
 SessionData=Result.SessionData;
 model=Result.model;
-[choices,~]=extractChoices_VB(SessionData);
+[choices,~]=extractChoices_VBL(SessionData);
 weightedChoices = zeros(1,SessionData.nTrials);
 
 %% Check Model Accuracy

@@ -44,7 +44,7 @@ end
 
 %% Train Weights
 for n = 1:nTrials-1
-    if laser(i)==0
+    if laser(n)==0
         alphaRule=alpha;
     else
         alphaRule=alphaL;

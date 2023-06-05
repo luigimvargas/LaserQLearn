@@ -1,6 +1,6 @@
 function plotVBL(result)
 %%
-    [choices,rewards]=extractChoices_VB(result.SessionData);
+    [choices,rewards]=extractChoices_VBL(result.SessionData);
     whichModel=result.model;
     SessionData=result.SessionData;
     maxReward=result.SessionData.TrialSettings(1).GUI.RewardAmountLarge;

@@ -8,7 +8,7 @@
     results=table({'model'},2,3,'VariableNames',{'ModelName','MedianAcc','Likelihood'});
 
     %% Test Softmax
-    softmaxResult=fitQModel_VBL(SessionData,'SoftMax','R');
+    softmaxResult=fitQModel_VBL(SessionData,'SoftMax','L');
     plotVBL(softmaxResult);
     %% Test Softmax Accuracy
     accuracyList=zeros(1,2000);

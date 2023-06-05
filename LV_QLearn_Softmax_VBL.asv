@@ -15,7 +15,7 @@ weights = zeros(2,SessionData.nTrials);      %assume 0 for starting conditions (
 rpe = zeros(size(weights));
 laser=SessionData.Laser;
 
-%% Fix flipped choice!!!!
+
 % Need to put choices in terms of contralateral and ipsilateral. Bilateral
 % manipulation will use the default (1 is left, 2 is right). We will set up
 % choice and outcome so choice 1 is ipsilateral and choice 2 is
@@ -86,17 +86,17 @@ choiceProbabilities = zeros(2,SessionData.nTrials);
 for i=1:SessionData.nTrials
     if laser(i)==1 % If the laser is on
         choiceProbabilities(1,i)= 1/...
-            ( 1+exp(1)^-(betaL*(weights(1,i)-weights(2,i)) -biasL) );
+            ( 1+exp(1)^-((betaL*(weights(1,i)-weights(2,i)))+biasL) );
         
         choiceProbabilities(2,i)= 1/...
-            ( 1+exp(1)^-(betaL*(weights(2,i)-weights(1,i)) +biasL) );
+            ( 1+exp(1)^-((betaL*(weights(2,i)-weights(1,i)))+biasL) );
         
     else % If the laser is off
         choiceProbabilities(1,i)= 1/...
-            ( 1+exp(1)^-(beta*(weights(1,i)-weights(2,i)) -bias) );
+            ( 1+exp(1)^-((beta*(weights(1,i)-weights(2,i)))+bias) );
         
         choiceProbabilities(2,i)= 1/...
-            ( 1+exp(1)^-(beta*(weights(2,i)-weights(1,i)) +bias) );
+            ( 1+exp(1)^-((beta*(weights(2,i)-weights(1,i)))+bias) );
     end
     
 end
