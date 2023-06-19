@@ -19,7 +19,7 @@ for i = 1:nAnimals
     
     % Test Softmax Decay
     resultStruct(i).softDecayResult=fitQModel_VBL(resultStruct(i).SessionData,'SoftDec');
-    resultStruct(i).bias=reultStruct(i).softDecayResult.bias;
+    resultStruct(i).bias=resultStruct(i).softDecayResult.bias;
     resultStruct(i).biasL=reultStruct(i).softDecayResult.biasL;
 end
 %% Plot Results

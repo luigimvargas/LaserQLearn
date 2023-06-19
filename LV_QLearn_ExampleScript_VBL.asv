@@ -15,23 +15,27 @@ end
 %% Perform model fits on each dataset
 for i = 1:nAnimals
     % Test Softmax
-    resultStruct(i).softmaxResult=fitQModel_VBL(resultStruct(i).SessionData,'SoftMax','L');
+    resultStruct(i).softmaxResult=fitQModel_VBL(resultStruct(i).SessionData,'SoftMax');
     
     % Test Softmax Decay
-    resultStruct(i).softDecayResult=fitQModel_VBL(resultStruct(i).SessionData,'SoftDec','L');
-    resultStruct(i).bias=reultStruct(i).softDecayResult.bias;
+    resultStruct(i).softDecayResult=fitQModel_VBL(resultStruct(i).SessionData,'SoftDec');
+    resultStruct(i).bias=resultStruct(i).softDecayResult.bias;
     resultStruct(i).biasL=reultStruct(i).softDecayResult.biasL;
-    
+end
+%% Plot Results
+for i = 1:nAnimals
     %% Plot Results
     softmaxResult=resultStruct(i).softmaxResult;
     figure()
     subplot(3,2,1)
     hold on
+    title(resultStruct(i).animalName{1})
     plotVBL(softmaxResult);
+    
     %% Test Softmax Accuracy
     accuracyList=zeros(1,2000);
-    for i=1:2000
-        accuracyList(i)=modelAccuracy_VBL(softmaxResult);
+    for j=1:2000
+        accuracyList(j)=modelAccuracy_VBL(softmaxResult);
     end
     
     subplot(3,2,2)
@@ -46,16 +50,17 @@ for i = 1:nAnimals
     ylabel(' # of occurences')
     xlabel('Accuracy')
     hold off;
-    
+    %%
     subplot(3,2,3)
     hold on
-    softDecayResult=resultStruct(9).softDecayResult;
+    softDecayResult=resultStruct(i).softDecayResult;
+    title(resultStruct(i).animalName{1})
     plotVBL(softDecayResult);
     %% Test Softmax with full decay accuracy
     accuracyList=zeros(1,2000);
     
-    for i=1:2000
-        accuracyList(i)=modelAccuracy_VBL(softDecayResult);
+    for j=1:2000
+        accuracyList(j)=modelAccuracy_VBL(softDecayResult);
     end
     results.ModelName(2)={'SoftDec'};
     results.MedianAcc(2)=median(accuracyList);
@@ -80,25 +85,25 @@ for i = 1:nAnimals
     %Trackers for when to move on to secondary rows
     LB=false;
     NLB=false;
-    for i=1:480
-        if softDecayResult.SessionData.Laser(i)==1
+    for j=1:softDecayResult.SessionData.nTrials
+        if softDecayResult.SessionData.Laser(j)==1
             if height(laserBin)==1 && LB==false
-                laserBin.Choice(1)=softDecayResult.choices(i);
-                laserBin.QDiff(1)=softDecayResult.QDifferences(i);
+                laserBin.Choice(1)=softDecayResult.choices(j);
+                laserBin.QDiff(1)=softDecayResult.QDifferences(j);
                 LB=true;
             else
-                laserBin.Choice(height(laserBin)+1)=softDecayResult.choices(i);
-                laserBin.QDiff(height(laserBin))=softDecayResult.QDifferences(i);
+                laserBin.Choice(height(laserBin)+1)=softDecayResult.choices(j);
+                laserBin.QDiff(height(laserBin))=softDecayResult.QDifferences(j);
             end
             
         else
             if height(noLaserBin)==1 && NLB==false
-                noLaserBin.Choice(1)=softDecayResult.choices(i);
-                noLaserBin.QDiff(1)=softDecayResult.QDifferences(i);
+                noLaserBin.Choice(1)=softDecayResult.choices(j);
+                noLaserBin.QDiff(1)=softDecayResult.QDifferences(j);
                 NLB=true;
             else
-                noLaserBin.Choice(height(noLaserBin)+1)=softDecayResult.choices(i);
-                noLaserBin.QDiff(height(noLaserBin))=softDecayResult.QDifferences(i);
+                noLaserBin.Choice(height(noLaserBin)+1)=softDecayResult.choices(j);
+                noLaserBin.QDiff(height(noLaserBin))=softDecayResult.QDifferences(j);
             end
         end
     end
@@ -125,6 +130,7 @@ for i = 1:nAnimals
     xlim([0 13])
     xticks([1.5 3.5 5.5 7.5 9.5 11.5])
     xticklabels({'-12 to -8', '-8 to -4', '-4 to 0', '0 to 4', '4 to 8', '8 to 12'})
+    title(resultStruct(i).animalName{1})
     xlabel('Q Differences')
     ylabel('Probability (Left)')
     
